@@ -34,25 +34,25 @@
 /* Some cross-platform support for thread support.  If we can't use __thread
  * we'll use the posix pthread_{get,set}specific API instead. */
 
-#if defined(__APPLE__)  &&  !defined(__aarch64__)
+if defined(__APPLE__)  &&  !defined(__aarch64__)
 /* No __thread support on this platform, instead we use Posix pthread keys. */
 
-#include <pthread.h>
+include <pthread.h>
 
-#define DECLARE_TLS(type, var)  static pthread_key_t var##__key
-#define INIT_TLS(var)           pthread_key_create(&var##__key, NULL)
-#define GET_TLS(var)            pthread_getspecific(var##__key)
-#define SET_TLS(var, value)     pthread_setspecific(var##__key, value)
+define DECLARE_TLS(type, var)  static pthread_key_t var##__key
+define INIT_TLS(var)           pthread_key_create(&var##__key, NULL)
+define GET_TLS(var)            pthread_getspecific(var##__key)
+define SET_TLS(var, value)     pthread_setspecific(var##__key, value)
 
-#else
+else
 /* Assume __thread support.  Makes life a *lot* simpler. */
 
-#define DECLARE_TLS(type, var)  static __thread type var##__thread
-#define INIT_TLS(var)           do {} while(0)
-#define GET_TLS(var)            var##__thread
-#define SET_TLS(var, value)     var##__thread = (value)
+define DECLARE_TLS(type, var)  static __thread type var##__thread
+define INIT_TLS(var)           do {} while(0)
+define GET_TLS(var)            var##__thread
+define SET_TLS(var, value)     var##__thread = (value)
 
-#endif
+endif
 
 
 /* Allocating stack aligned memory.  Again this is very platform dependent. */
